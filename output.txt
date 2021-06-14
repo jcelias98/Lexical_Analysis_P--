@@ -1,0 +1,30 @@
+program,symb_program
+p,ident
+;,symb_semicol
+var,symb_var
+x@,Erro léxico na linha 3: Identificador inválido
+:,symb_col
+integer,symb_integer
+;,symb_semicol
+begin,symb_begin
+x,ident
+:=,symb_assign
+1,num_int
+;,symb_semicol
+while,symb_while
+(,symb_oparentesis
+x,ident
+<,symb_lt
+3.,Erro léxico na linha 6: Número inválido
+),symb_cparentesis
+do,symb_do
+x,ident
+:=,symb_assign
+x,ident
++,symb_add
+1,num_int
+;,symb_semicol
+!,Erro léxico na linha 7: Caracter inválido
+end,symb_end
+.,symb_dot
+,Erro léxico na linha 10: Comentário não finalizado

@@ -9,7 +9,12 @@ This script not requires any module to be installed, is only necessary Python >=
 This file can also be imported as a module using:
 	import lexical_analysis
 
-Author: Juan Carlos Elias Obando Valdivia - juan.valdivia@usp.br
+Authors: Bruno Ribeiro Helou (10276852)
+         Juan Carlos Elias Obando Valdivia (7487156)
+         Maria Luisa do Nascimento da Silva (10310721)
+
+
+
 """
 
 
