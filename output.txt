@@ -27,4 +27,4 @@ x,ident
 !,Erro léxico na linha 7: Caracter inválido
 end,symb_end
 .,symb_dot
-,Erro léxico na linha 10: Comentário não finalizado
+,Erro léxico na linha 9: Comentário não finalizado

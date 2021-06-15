@@ -512,7 +512,7 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> None:
 
 	#the comment was opened but not closed?
 	if is_comment == True:
-	    lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (4, counter_lines)
+	    lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (4, counter_lines-1)
 	    counter_errors += 1
 	
 	#open output file and write lexical message 
