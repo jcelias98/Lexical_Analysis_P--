@@ -73,7 +73,7 @@ while,symb_while
 (,symb_oparentesis
 x,ident
 <,symb_lt
-3.,Erro léxico na linha 23: Número inválido
+3,num_int
 ),symb_cparentesis
 do,symb_do
 x,ident
@@ -82,7 +82,7 @@ x,ident
 +,symb_add
 1,num_int
 ;,symb_semicol
-!,Erro léxico na linha 24: Caracter inválido
+!,Erro lÃ©xico na linha 24: Caracter invÃ¡lido
 end,symb_end
 .,symb_dot
-,Erro léxico na linha 26: Comentário não finalizado
+,Erro lÃ©xico na linha 26: ComentÃ¡rio nÃ£o finalizado

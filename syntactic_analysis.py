@@ -6,7 +6,7 @@ def program_syntatic(chain, number_of_errors):
             if chain[0]['token'] == 'symb_semicol':
                 chain.pop(0)
                 body = body_syntatic(chain)
-                if body == 'symb_dot':
+                if body[0]['token'] == 'symb_dot':
                     body.pop(0)
                     return body
                 else:
@@ -24,7 +24,6 @@ def body_syntatic(chain):
     dc =  dc_syntatic(chain)
     if dc[0]['token'] == 'symb_begin':
         dc.pop(0)
-        
         commands = comands_syntatic(dc)
         if commands[0]['token'] == 'symb_end':
             commands.pop(0)
@@ -34,7 +33,6 @@ def body_syntatic(chain):
     else:
         print('Erro symb begin')
 
-    
 ###############################################
 def dc_syntatic(chain):
     dc_c = dc_c_syntatic(chain)
@@ -62,15 +60,12 @@ def dc_c_syntatic(chain):
                     number.pop(0)
                     dc_c = dc_c_syntatic(number)
                     return dc_c
-                   
                 else:
                     print('erro semicol')
             else:
                 print('erro symb _eq')
         else:
-            print('erro symb_ident')
-
-                    
+            print('erro ident')
     else:
         return chain
 
@@ -81,24 +76,20 @@ def dc_v_syntatic(dc_c):
         var = var_syntatic(dc_c)
         if var[0]['token'] =='symb_col':
             var.pop(0)
-            type_var = type_var_syntatic(var)    
+            type_var = type_var_syntatic(var)
             if type_var[0]['token'] =='symb_semicol':
                 type_var.pop(0)
                 dc_v = dc_v_syntatic(type_var)
                 return dc_v
-                   
             else:
                 print('erro symb semicol')
         else:
             print('erro symb_col')
-
-                    
     else:
         return dc_c
 
 ################################################
 def dc_p_syntatic(dc_v):
-
     if dc_v[0]['token'] == 'symb_procedure':
         dc_v.pop(0)
         if dc_v[0]['token'] == 'ident':
@@ -111,9 +102,8 @@ def dc_p_syntatic(dc_v):
             else:
                 print('erro symb semicol dc_p ')
         else:
-            print('erro ident dc_p')    
+            print('erro ident dc_p')
     return dc_v
-
 
 ################################################
 def number_syntatic(number):
@@ -121,7 +111,7 @@ def number_syntatic(number):
         number.pop(0)
     else:
         print('tratar erro number')
-    
+
     return number
 
 ################################################ SE SOBRAR TEMPO ARRUMA ISSO AQUI
@@ -130,14 +120,12 @@ def var_syntatic(var):
         var.pop(0)
     return var
 
-
 ################################################
 def type_var_syntatic(number):
     if number[0]['token'] == 'symb_integer' or number[0]['token'] == 'symb_real':
         number.pop(0)
     else:
         print('tratar erro number')
-    
     return number
 
  ################################################
@@ -191,7 +179,8 @@ def cmd_syntatic(chain):
             chain.pop(0)
             var =  var_syntatic(chain)
             if var[0]['token'] == 'symb_cparentesis':
-                return var.pop(0)
+                var.pop(0)
+                return var
             else:
                 print("erro fecha parentesis cmd")
         else:
@@ -204,13 +193,14 @@ def cmd_syntatic(chain):
             if condition[0]['token'] == 'symb_cparentesis':
                 condition.pop(0)
                 if condition[0]['token'] == 'symb_do':
-                    return cmd_syntatic(condition.pop(0))
+                    condition.pop(0)
+                    return cmd_syntatic(condition)
             else:
                 print("erro fecha parentesis cmd")
         else:
             print('erro open parentesis')
 
-    elif chain[0]['token'] == 'symb_ident':
+    elif chain[0]['token'] == 'ident':
         chain.pop(0)
         if chain[0]['token'] == 'symb_assign':
             chain.pop(0)
@@ -302,7 +292,9 @@ def factor_syntatic(chain):
             print(' missing close parentesis in factor')
     else:
         print('error factor')
+
 ####################################################
+
 def more_factors_syntatic(factor):
     if factor[0]['token'] in ['symb_mult', 'symb_div']:
         factor.pop(0)
@@ -310,12 +302,35 @@ def more_factors_syntatic(factor):
         return more_factors_syntatic(factor)
     return factor
 
+####################################################
+
+def arguments_syntatic(chain):
+    while chain[0]['token'] == 'ident' or chain[0]['token'] =='symb_semicol':
+        chain.pop(0)
+    return chain
+
+####################################################
+
+def pfalse_syntatic(chain):
+    if chain[0]['token'] == "symb_else":
+        chain.pop(0)
+        return cmd_syntatic(chain)
+    return chain
+
+####################################################
+
+def other_therm_syntatic(chain):
+    if chain[0]["token"] in ['symb_add', 'symb_diff']:
+        chain.pop(0)
+        term = term_syntatic(chain)
+        return other_therm_syntatic(term)
+    return chain
+
 ############ Syntatic Main #####################
 def make_syntatic_analysis(chain: str):
     number_of_errors = 0
-    program_syntatic(chain, number_of_errors)
-    if len(chain) == 0:
-        return 'Sucess'
+    rest = program_syntatic(chain, number_of_errors)
+    if len(rest) == 0:
+        print('Sucess')
     else:
-        return 'ERRO, Programa não finalizado'
-    return 0
+        print('ERRO, Programa não finalizado')
