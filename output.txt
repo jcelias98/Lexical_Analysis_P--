@@ -28,6 +28,43 @@ real,symb_real
 ),symb_cparentesis
 ;,symb_semicol
 begin,symb_begin
+read,symb_read
+(,symb_oparentesis
+c,ident
+,,symb_coma
+a,ident
+),symb_cparentesis
+;,symb_semicol
+if,symb_if
+a,ident
+<,symb_lt
+x,ident
++,symb_add
+c,ident
+then,symb_then
+begin,symb_begin
+a,ident
+:=,symb_assign
+c,ident
++,symb_add
+x,ident
+;,symb_semicol
+write,ident
+(,symb_oparentesis
+a,ident
+),symb_cparentesis
+;,symb_semicol
+end,symb_end
+else,symb_else
+c,ident
+:=,symb_assign
+a,ident
++,symb_add
+x,ident
+;,symb_semicol
+end,symb_end
+;,symb_semicol
+begin,symb_begin
 x,ident
 :=,symb_assign
 1,num_int
@@ -36,7 +73,7 @@ while,symb_while
 (,symb_oparentesis
 x,ident
 <,symb_lt
-3.,Erro léxico na linha 13: Número inválido
+3.,Erro léxico na linha 23: Número inválido
 ),symb_cparentesis
 do,symb_do
 x,ident
@@ -45,7 +82,7 @@ x,ident
 +,symb_add
 1,num_int
 ;,symb_semicol
-!,Erro léxico na linha 14: Caracter inválido
+!,Erro léxico na linha 24: Caracter inválido
 end,symb_end
 .,symb_dot
-,Erro léxico na linha 16: Comentário não finalizado
+,Erro léxico na linha 26: Comentário não finalizado
