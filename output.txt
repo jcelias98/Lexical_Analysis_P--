@@ -1,10 +1,31 @@
 program,symb_program
 p,ident
 ;,symb_semicol
+const,symb_const
+eba,ident
+=,symb_eq
+2,num_int
+;,symb_semicol
+const,symb_const
+ea,ident
+=,symb_eq
+2,num_int
+;,symb_semicol
 var,symb_var
-x@,Erro lÃ©xico na linha 3: Identificador invÃ¡lido
+x,ident
+,,symb_coma
+y,ident
+z,ident
 :,symb_col
 integer,symb_integer
+;,symb_semicol
+procedure,symb_procedure
+nomep,ident
+(,symb_oparentesis
+x,ident
+:,symb_col
+real,symb_real
+),symb_cparentesis
 ;,symb_semicol
 begin,symb_begin
 x,ident
@@ -15,7 +36,7 @@ while,symb_while
 (,symb_oparentesis
 x,ident
 <,symb_lt
-3.,Erro lÃ©xico na linha 6: NÃºmero invÃ¡lido
+3.,Erro léxico na linha 13: Número inválido
 ),symb_cparentesis
 do,symb_do
 x,ident
@@ -24,7 +45,7 @@ x,ident
 +,symb_add
 1,num_int
 ;,symb_semicol
-!,Erro lÃ©xico na linha 7: Caracter invÃ¡lido
+!,Erro léxico na linha 14: Caracter inválido
 end,symb_end
 .,symb_dot
-,Erro lÃ©xico na linha 9: ComentÃ¡rio nÃ£o finalizado
+,Erro léxico na linha 16: Comentário não finalizado

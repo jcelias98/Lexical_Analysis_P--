@@ -436,7 +436,7 @@ def check_comments (character: str, is_comment: bool, counter_lines: str) -> lis
 
 ###############################################################################################################################################################
 
-def make_lexical_analysis (file_name_input: str, file_name_output: str):
+def make_lexical_analysis (file_name_input: str, file_name_output: str) -> str:
 	"""
     Make the lexical analysis of an input file (p--	code) and saves the result in the output file.
 
@@ -522,4 +522,4 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str):
 	file_output.close()
 	file_input.close()
 
-	print(lexical_message)
+	return table_tokens

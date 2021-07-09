@@ -1,6 +1,13 @@
 program p;
 {Comentário correto.}
-var x@: integer;
+
+const eba = 2;
+const ea = 2;
+
+var x,y z: integer;
+
+procedure nomep(x: real);
+
 begin
     x:=1;
     while (x < 3.) do
