@@ -31,12 +31,12 @@ def is_num_int_automata(final_word: str) -> list:
     	digit_non_0 -> 1|...|9
 		digit -> 0|1|...|9
 		integer_number -> 0 | (digit_non_0)(digit)*
-    
+
     Arguments:
     ----------------------------------------
     final_word : str
         word to be checked by the automata
-    
+
     Returns:
     -----------------------------------------
     list : [bool, str]
@@ -63,12 +63,12 @@ def is_num_real_automata(final_word: str) -> list:
     	digit_non_0 -> 1|...|9
 		digit -> 0|1|...|9
 		integer_number -> (0)(.)(digit)+| (digit_non_0)(digit)*(.)(digit)+
-    
+
     Arguments:
     ----------------------------------------
     final_word : str
         word to be checked by the automata
-    
+
     Returns:
     -----------------------------------------
     list : [bool, str]
@@ -95,12 +95,12 @@ def is_identifier_automata(final_word: str) -> list:
 		identifier -> letter(letter|digit)*
 
 	Reserved words: ['program','begin','end', 'const'','var', 'real', 'integer', 'procedure', 'read', 'else', 'while', 'do','for','to', 'if','then','else']
-    
+
     Arguments:
     ----------------------------------------
     final_word : str
         word to be checked by the automata
-    
+
     Returns:
     -----------------------------------------
     list : [bool, str]
@@ -108,7 +108,7 @@ def is_identifier_automata(final_word: str) -> list:
         str - 'ident': if a given word is an identifier or referent reserved token: if a given word is a reserved word, "": otherwise
 
     """
-    
+
     reserved_words = ({'program':'symb_program','begin':'symb_begin','end':'symb_end', 'const': 'symb_const',
                     'var':'symb_var', 'real':'symb_real', 'integer':'symb_integer', 'procedure':'symb_procedure',
                     'read':'symb_read', 'else':'symb_else', 'while':'symb_while', 'do':'symb_do','for':'symb_for',
@@ -116,7 +116,7 @@ def is_identifier_automata(final_word: str) -> list:
 
     if final_word in reserved_words:
         token = reserved_words[final_word]
-        return [True, token] 
+        return [True, token]
     elif re.match('(^[a-zA-Z][a-zA-Z0-9]*)$', final_word):
         token = 'ident'
         return [True, token]
@@ -132,12 +132,12 @@ def is_punctuation_automata(final_word: str) -> list:
 
 
     Punctuation words: ['+', '-', '*', '/', '>','<', '(', ')', '.', ':', ',', '=', ':=', '>=', '<=', '<>']
-    
+
     Arguments:
     ----------------------------------------
     final_word : str
         word to be checked by the automata
-    
+
     Returns:
     -----------------------------------------
     list : [bool, str]
@@ -145,15 +145,15 @@ def is_punctuation_automata(final_word: str) -> list:
         str - referent punctuation token: if a given word is a punctuation word, "": otherwise
 
     """
-    
+
     punct_words = ({'+': 'symb_add', '-': 'symb_diff', '*': 'symb_mult', '/': 'symb_div', '>': 'symb_gt',
                     '<': 'symb_lt', '(': 'symb_oparentesis', ')': 'symb_cparentesis', '.':'symb_dot',
                     ':': 'symb_col',';':'symb_semicol',',':'symb_coma', '=': 'symb_eq',':=':'symb_assign',
                     '>=':'symb_gte', '<=':'symb_lte', '<>':'symb_neq'})
-    
+
     if final_word in punct_words:
         token = punct_words[final_word]
-        return [True, token] 
+        return [True, token]
     else :
         return [False, ""]
 
@@ -164,18 +164,18 @@ def get_message_lexical_error (id_error: int, number_line: int) -> str:
     """
     Returns lexical error message.
 
-    
+
     Arguments:
     ----------------------------------------
     id_error : int
         type of error (1: invalid number, 2: invalid identifier, 3: invalid character, 4: comment not finished)
     number_line: int
         file line where the error occurred
-    
+
     Returns:
     -----------------------------------------
-    str : 
-        error_message: lexical error message 
+    str :
+        error_message: lexical error message
 
     """
     if id_error == 1:
@@ -199,7 +199,7 @@ def add_final_word_to_table (table_tokens: list, lexical_message: str, final_wor
     Add a word and the corresponding token to table when the word is recognized by one of the defined automatas is this module.
     Else the corresponding lexical message error is obtained.
 
-    
+
     Arguments:
     ----------------------------------------
 
@@ -214,39 +214,39 @@ def add_final_word_to_table (table_tokens: list, lexical_message: str, final_wor
     counter_errors : int
         current number of errors that ocurred until now
 
-    
+
     Returns:
     -----------------------------------------
-    list : [str, int] 
+    list : [str, int]
     	str - lexical_message updated
     	int - counter_errors updated
 
     """
-    
+
     is_error = False
     #if first character is digit, check if is an integer number or real number
-    if final_word[0].isdigit() == True: 
+    if final_word[0].isdigit() == True:
         resp_aux = is_num_int_automata(final_word)
-        
-        if resp_aux[0] == False: 
+
+        if resp_aux[0] == False:
             resp_aux = is_num_real_automata(final_word)
-         
-        #if is not a number, number error is detected   
+
+        #if is not a number, number error is detected
         if resp_aux[0] == False:
             resp_aux[1] = 'num_real'
             lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (1, counter_lines) + "\n"
             counter_errors += 1
             is_error = True
-    
+
     #check if is a punctuation character
     elif (final_word[0] >= ':' and final_word[0] <= '>') or (final_word[0] >= '(' and final_word[0] <= '/'):
         resp_aux = is_punctuation_automata(final_word)
-    
+
     #check if is a identifier character
     elif re.match('^([a-zA-Z0-9]+)$', final_word[0]):
         resp_aux = is_identifier_automata(final_word)
-        
-        #if is not an identifier, identifier error is detected 
+
+        #if is not an identifier, identifier error is detected
         if resp_aux[0] == False:
             resp_aux[1] = 'ident'
             lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (2, counter_lines) + "\n"
@@ -258,10 +258,10 @@ def add_final_word_to_table (table_tokens: list, lexical_message: str, final_wor
         lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (3, counter_lines) + "\n"
         counter_errors += 1
         is_error = True
-    
+
     #if error is not detected, add final_word and token to table_tokens
     if is_error == False:
-        table_tokens.append({'cadeia': final_word, 'token': resp_aux[1]}) 
+        table_tokens.append({'cadeia': final_word, 'token': resp_aux[1]})
         lexical_message = lexical_message + final_word + ',' + resp_aux[1] + "\n"
     return [lexical_message, counter_errors]
 
@@ -272,8 +272,8 @@ def check_one_or_two_characters (character: str, final_word: str, sentence: str,
 
     """
     Check if the current character in the current sentence (that can be include more than one word) is a puctuation word that has one or two characters
-    
-    
+
+
     Arguments:
     ----------------------------------------
     character: str
@@ -292,16 +292,16 @@ def check_one_or_two_characters (character: str, final_word: str, sentence: str,
     is_comment : bool
         flag to detect if a comment was opened
     has_2_character: bool
-        flag that suggest if we probably have a word with 2 characters 
+        flag that suggest if we probably have a word with 2 characters
     lexical_message : str
         result to be added in the output file until now
     table_tokens : list
         list containing the word and the corresponding token until now
 
-    
+
     Returns:
     -----------------------------------------
-    list : [str, int, bool, str, list, int] 
+    list : [str, int, bool, str, list, int]
         str - lexical_message updated
         int - counter_errors updated
         bool - has_2_characters updated
@@ -313,7 +313,7 @@ def check_one_or_two_characters (character: str, final_word: str, sentence: str,
 
     counter_characters += 1
 
-    #check if the character is a common symbol 
+    #check if the character is a common symbol
     if character in '=,;()+-/*' and is_comment==False and has_2_characters==False:
         if final_word != "":
             lexical_message, counter_errors =  add_final_word_to_table (table_tokens, lexical_message,
@@ -338,7 +338,7 @@ def check_one_or_two_characters (character: str, final_word: str, sentence: str,
         has_2_characters=True
 
     #check if a symbol with 2 characters was detected
-    elif is_comment==False and has_2_characters==True: 
+    elif is_comment==False and has_2_characters==True:
         #if symbol has 2 characters (i.e. final word is in [':', '<', '>'] and the current character is  the corresponding character to complete the symbol) add them to table
         #LOOKAHEAD
         if (final_word == ':' and character == '=') or (final_word == '<' and character == '>') or (final_word == '>' and character == '=') or (final_word == '<' and character == '='):
@@ -364,8 +364,8 @@ def check_end_program (character:str, final_word: str, counter_errors: int, coun
 
     """
     Insert 'end' to table_tokens and update the final_word with '.' (this character will be processed later)
-    
-    
+
+
     Arguments:
     ----------------------------------------
     character: str
@@ -381,10 +381,10 @@ def check_end_program (character:str, final_word: str, counter_errors: int, coun
     table_tokens : list
         list containing the word and the corresponding token until now
 
-    
+
     Returns:
     -----------------------------------------
-    list : [str, int, str, list, int] 
+    list : [str, int, str, list, int]
         str - lexical_message updated
         int - counter_errors updated
         str - final_word updated
@@ -393,7 +393,7 @@ def check_end_program (character:str, final_word: str, counter_errors: int, coun
 
     """
 
-                   
+
     lexical_message, counter_errors =  add_final_word_to_table (table_tokens, lexical_message, final_word, counter_lines, counter_errors)
     final_word = ""
     final_word = final_word + character
@@ -406,8 +406,8 @@ def check_comments (character: str, is_comment: bool, counter_lines: str) -> lis
 
 	"""
     Checks if a probably comment begun ('{'), or the comment is closed.
-    
-    
+
+
     Arguments:
     ----------------------------------------
     character: str
@@ -417,10 +417,10 @@ def check_comments (character: str, is_comment: bool, counter_lines: str) -> lis
     counter_lines : int
         file line where the word occurred
 
-    
+
     Returns:
     -----------------------------------------
-    list : [bool, int] 
+    list : [bool, int]
         bool - is_comment updated
         line_comment - number of line where the comment begun
 
@@ -436,11 +436,11 @@ def check_comments (character: str, is_comment: bool, counter_lines: str) -> lis
 
 ###############################################################################################################################################################
 
-def make_lexical_analysis (file_name_input: str, file_name_output: str) -> None:
+def make_lexical_analysis (file_name_input: str, file_name_output: str):
 	"""
     Make the lexical analysis of an input file (p--	code) and saves the result in the output file.
-    
-    
+
+
     Arguments:
     ----------------------------------------
     file_name_input: str
@@ -448,7 +448,7 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> None:
     file_name_output: str
         name of the output file (file that contains the result of lexical analysis)
 
-    
+
     Returns:
     -----------------------------------------
     None
@@ -465,48 +465,48 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> None:
 	counter_errors = 0
 	counter_characters = 0
 
-	table_tokens = [] 
+	table_tokens = []
 	lexical_message = ""
 	final_word = ""
 
 	#get each line
 	for line in lines:
-	    
+
 	    #get words in a line
 	    words_in_line = line.strip().split(' ')
-	    
+
 	    #get sentences for words in a line
 	    for sentence in words_in_line:
-	        
+
 	        counter_characters = 0
-	        
+
 	        #get character in a sentence
 	        for character in sentence:
 	            #current character is a puctuation word?
 	            if (character in '=,;()+-/*' and is_comment==False and has_2_characters==False) or \
 	                (character in ':<>' and is_comment==False and has_2_characters==False) or \
 	                (is_comment==False and has_2_characters==True):
-	            
+
 	                lexical_message, counter_errors, has_2_characters, final_word, table_tokens, counter_characters = check_one_or_two_characters (character, final_word, sentence, counter_characters, counter_lines,
 	                        counter_errors,is_comment, has_2_characters, lexical_message, table_tokens)
-	                
+
 	            #current final_word is 'end' and current character is '.' (i.e. end of p-- code)?
-	            elif (is_comment==False) and (final_word == 'end' and character == '.'): 
+	            elif (is_comment==False) and (final_word == 'end' and character == '.'):
 	                lexical_message, counter_errors, final_word, table_tokens = check_end_program (character, final_word, counter_errors, counter_lines, lexical_message, table_tokens)
-	            
-	            #check if the comment starts or ends 
+
+	            #check if the comment starts or ends
 	            elif ((is_comment == False) and (character == '{')) or ((is_comment == True) and (character == '}')):
 	                is_comment, line_comment = check_comments (character, is_comment, counter_lines)
-	            
+
 	            #final word is probably an identifier, a reserved word, an integer number or a real number!!!
 	            elif is_comment == False:
 	                final_word = final_word + character
-	        
+
 	        if final_word != "":
 	        	#recognize the final_word and added to table
 	            lexical_message, counter_errors =  add_final_word_to_table (table_tokens, lexical_message, final_word, counter_lines, counter_errors)
-	            final_word = ""        
-	    
+	            final_word = ""
+
 	    #analyse next line
 	    counter_lines = counter_lines + 1
 
@@ -514,12 +514,12 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> None:
 	if is_comment == True:
 	    lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (4, counter_lines-1)
 	    counter_errors += 1
-	
-	#open output file and write lexical message 
-	file_output = open(file_name_output, 'w')    
+
+	#open output file and write lexical message
+	file_output = open(file_name_output, 'w')
 	file_output.write(lexical_message)
 
 	file_output.close()
-	file_input.close() 
+	file_input.close()
 
-	print(lexical_message) 
+	print(lexical_message)

@@ -1,8 +1,9 @@
 import lexical_analysis
+import syntactic_analysis
 import argparse
 
 def parse_args():
-    
+
     parser = argparse.ArgumentParser(description="Run lexical_analysis.")
 
     parser.add_argument('--input', type=str,
@@ -13,7 +14,8 @@ def parse_args():
     return parser.parse_args()
 
 def main(args):
-	lexical_analysis.make_lexical_analysis(args.input, args.output)
+    lexical_analysis.make_lexical_analysis(args.input, args.output)
+    #syntactic_analysis.make_syntatic_analysis()
 
 #-----------------------------------------------------
 if __name__ == '__main__': # chamada da funcao principal
