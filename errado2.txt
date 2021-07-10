@@ -1,0 +1,7 @@
+program meuPrograma;
+{exemplo1}
+var a integer;
+var b : ;
+begin
+    a:=1;
+end

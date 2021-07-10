@@ -1,0 +1,25 @@
+program p;
+{Comentário correto.}
+
+const eba = ;
+const ea = 2;
+
+var x,y z: real;
+var e : integer;
+
+procedure nomep (x: real; y : integer);
+var t : real;
+
+    read (c, a);
+    for i:=1 to 10 do
+        begin
+            x:=x+i;
+            write(x);
+        end;
+end;
+
+begin
+    x:= ;
+    while (s 3) do
+        x:=x+1;!
+end.

@@ -1,0 +1,26 @@
+program p;
+{Comentário correto.}
+
+const eba = 2;
+const ea = 2;
+
+var x,y z: integer;
+
+procedure nomep(x: real);
+begin
+    read(c, a);
+    if a<x+c then
+    begin
+        a:= c+x;
+        write(a);
+    end
+    else c:= a+x;
+end;
+
+
+begin
+    x:=1;
+    while (x < 3) do
+        x:=x+1;!
+end.
+{Erro no comentário.
