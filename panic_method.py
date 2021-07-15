@@ -1,4 +1,5 @@
-def panic_method(chain, followers):
+###### Método Pânico ####
+def panic_method(chain, followers): #essa função consome a cadeia até que seja encontrado um seguidor a partir do dicionário, sendo a chave o símbolo faltante
     if not chain:
         print("Cadeia vazia")
     else:
