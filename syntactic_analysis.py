@@ -1,4 +1,7 @@
+#importa o método pânico
 import panic_method
+################### Acho que dicionário com chave: símbolo e valor: seguidores do símbolo e seguidores do pai. Utilizado para encontrar
+#  a parada no método de pânico para tratamento de erros #########################
 term_followers = {'symb_program': ["ident"], 'ident': ['symb_semicol', 'symb_coma', 'symb_col', 'symb_oparentesis', 'symb_begin', 'symb_cparentesis', 'symb_assign', 'symb_add', 'symb_diff', 'symb_div', 'symb_mult', 'symb_then', 'symb_eq', 'symb_neq', 'symb_gte', 'symb_lte', 'symb_gt', 'symb_lt'],
 'symb_semicol':['symb_const', 'symb_var', 'symb_procedure', 'symb_begin', 'symb_cparentesis', 'symb_read', 'symb_write', 'symb_while', 'ident', 'symb_begin', 'symb_if', 'symb_for', 'symb_semicol'],'symb_begin': ['symb_read', 'symb_write', 'symb_while', 'ident', 'symb_begin', 'symb_if', 'symb_for', 'symb_end', 'symb_dot', 'symb_procedure', 'symb_semicol'],
 'symb_end': ['symb_dot', 'symb_procedure', 'symb_begin', 'symb_semicol'], 'symb_const': ['ident', 'symb_var', 'symb_procedure', 'symb_begin'], 'ident': ['symb_eq', 'symb_var', 'symb_procedure', 'symb_begin'], 'symb_eq': ['num_integer', 'num_real','symb_var', 'symb_procedure', 'symb_begin'],'symb_var': ['ident', 'symb_procedure', 'symb_begin', 'symb_col', 'symb_semicol', 'symb_integer', 'symb_real', 'symb_read', 'symb_write', 'symb_while', 'ident', 'symb_if', 'symb_for', 'symb_end'],
@@ -19,29 +22,31 @@ term_followers = {'symb_program': ["ident"], 'ident': ['symb_semicol', 'symb_com
 'symb_div': ['symb_add', 'symb_diff', 'ident', 'num_int', 'num_real', 'symb_oparentesis', 'symb_cparentesis', 'symb_then', 'symb_eq', 'symb_neq', 'symb_gte', 'symb_lte', 'symb_gt', 'symb_lt'], 'symb_procedure': ['symb_begin', 'ident'],
 'symb_then':['symb_read', 'symb_write', 'symb_while', 'ident', 'symb_begin', 'symb_if', 'symb_for', 'symb_end', 'symb_dot', 'symb_procedure', 'symb_semicol']}
 
-
+#OBS: o fluxo descrito nessa primeira função será mais completo, visto que muito será replicado futuramente e afim de evitar repetição, leva-se em consideração
+# que a mesma lógica aplicada a função program_syntatic será utilizada para as próximas, que serão menos detalhadas. 
+##############   Função para a regra <programa> #########################
 def program_syntatic(chain, number_of_errors):
-    if chain[0]['token'] == 'symb_program':
-        chain.pop(0)
-    else:
-        get_message_syntatic_error(chain, "'program'", 'symb_program')
-    if chain[0]['token'] == 'ident':
-        chain.pop(0)
+    if chain[0]['token'] == 'symb_program': # os comparadores servem para comparar o primeiro token da cadeia com o token esperado
+        chain.pop(0) #essa função remove o ultimo 
+#token lido da cadeia, permitindo atualizar para que o primeiro token sempre seja o esperado e possa ser comnparado de acordo com a gramática definida
+    else: 
+        get_message_syntatic_error(chain, "'program'", 'symb_program') # caso o token esperado não seja encontrado, é chamada a função de erro sintático 
+    if chain[0]['token'] == 'ident': 
+        chain.pop(0) 
     else:
         get_message_syntatic_error(chain, "identificador", 'ident')
     if chain[0]['token'] == 'symb_semicol':
         chain.pop(0)
     else:
         get_message_syntatic_error(chain, "';'", 'symb_semicol')
-    body = body_syntatic(chain)
+    body = body_syntatic(chain) # após ter todos os tokens esperados em program, é chamada a regra body
     if body and body[0]['token'] == 'symb_dot':
         body.pop(0)
         return body
     else:
         print("Erro sintático: '.' esperado")
 
-#################################################
-
+#####################  Função para a regra <body>  #####################
 def body_syntatic(chain):
     dc =  dc_syntatic(chain)
     if dc and dc[0]['token'] == 'symb_begin':
@@ -55,7 +60,7 @@ def body_syntatic(chain):
         commands = get_message_syntatic_error(commands, "end", 'symb_end')
     return commands
 
-###############################################
+######################  função para a regra <dc>  #######################
 
 def dc_syntatic(chain):
     dc_c = dc_c_syntatic(chain)
