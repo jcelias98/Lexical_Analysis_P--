@@ -2,11 +2,9 @@ program nome2;
 const B  5;
 var a: real;
 var b: integer;
-
 procedure nomep(x : real;
     begin
         read(c, a);
-
         if a<x+c then
             begin
                 a:= c+x;
@@ -23,7 +21,6 @@ procedure nomep(x : real;
                 write(x);
             end;
     end;
-
 begin {programa principal}
     read(b);
     nomep(b);

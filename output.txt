@@ -1,3 +1,6 @@
-Erro léxico na linha 7: Identificador inválido
-Erro léxico na linha 24: Caracter inválido
-Erro léxico na linha 26: Comentário não finalizado
+Erro sintático na linha 2: '=' esperado
+Erro sintático na linha 6: ')' esperado
+Erro sintático na linha 6: ';' esperado
+Erro sintático na linha 18: número inteiro esperado
+Erro sintático na linha 19: "do" esperado
+Erro sintático na linha 27: end esperado

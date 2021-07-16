@@ -26,7 +26,8 @@ term_followers = {'symb_program': ["ident"], 'ident': ['symb_semicol', 'symb_com
 #OBS: o fluxo descrito nessa primeira função será mais completo, visto que muito será replicado futuramente e afim de evitar repetição, leva-se em consideração
 # que a mesma lógica aplicada a função program_syntatic será utilizada para as próximas, que serão menos detalhadas. 
 ##############   Função para a regra <programa> #########################
-def program_syntatic(chain, number_of_errors):
+def program_syntatic(chain, number_of_errors, last_line):
+    
     if chain[0]['token'] == 'symb_program': # os comparadores servem para comparar o primeiro token da cadeia com o token esperado
         chain.pop(0) #essa função remove o primeiro elemento da cadeia
 #token lido da cadeia, permitindo atualizar para que o primeiro token sempre seja o esperado e possa ser comnparado de acordo com a gramática definida
@@ -40,25 +41,33 @@ def program_syntatic(chain, number_of_errors):
         chain.pop(0)
     else:
         get_message_syntatic_error(chain, "';'", 'symb_semicol')
-    body = body_syntatic(chain) # após ter todos os tokens esperados em program, é chamada a regra body
+    body = body_syntatic(chain, last_line) # após ter todos os tokens esperados em program, é chamada a regra body
     if body and body[0]['token'] == 'symb_dot':
         body.pop(0)
         return body
     else:
-        print("Erro sintático: '.' esperado") # Caso não haja . na tabela de tokens, o erro é retornado
+        global syntatic_errors
+        syntatic_errors =  syntatic_errors + "Erro sintático na linha {}: '.' esperado".format(last_line) +'\n'
+        print("Erro sintático: '.' esperado", chain) # Caso não haja . na tabela de tokens, o erro é retornado
 
 #####################  Função para a regra <body>  #####################
-def body_syntatic(chain):
+def body_syntatic(chain, last_line):
     dc =  dc_syntatic(chain) # chama a função dc_syntatic
     if dc and dc[0]['token'] == 'symb_begin':
         dc.pop(0)
+        print('dc',dc)
     else:
         commands = get_message_syntatic_error(dc, "begin", 'symb_begin') 
     commands = comands_syntatic(dc)
     if commands and commands[0]['token'] == 'symb_end':
         commands.pop(0)
     else:
-        commands = get_message_syntatic_error(commands, "end", 'symb_end')
+        if len(commands) > 0:
+            commands = get_message_syntatic_error(commands, "end", 'symb_end')
+        else:
+            print('Fim de arquivo não encontrado')
+            global syntatic_errors
+            syntatic_errors = syntatic_errors + 'Erro sintático na linha {}: end não encontrado'.format(last_line) + '\n'
     return commands
 
 ######################  função para a regra <dc>  #######################
@@ -415,8 +424,9 @@ def get_message_syntatic_error(chain, error, symb):
 ############ Syntatic Main #####################
 def make_syntatic_analysis(chain: str, file_name_output: str):
     global syntatic_errors
+    last_line = chain[len(chain)-1]['counter_lines']
     number_of_errors = 0
-    rest = program_syntatic(chain, number_of_errors)
+    rest = program_syntatic(chain, number_of_errors, last_line)
     if not rest:
         print(syntatic_errors)
         

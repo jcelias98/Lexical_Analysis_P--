@@ -1,17 +1,17 @@
 program p;
 {Comentário correto.}
 
-const eba = ;
+const eba =2 ;
 const ea = 2;
 
-var x,y z: real;
+var x,y, z: real;
 var e : integer;
-
+var i: integer;
 procedure nomep (x: real; y : integer);
 var t : real;
-
+begin
     read (c, a);
-    for i:=1 to 10 do
+    for i := 1 to 10 do
         begin
             x:=x+i;
             write(x);

@@ -10,7 +10,7 @@ procedure nomep(x: real);
 begin
     read(c, a);
     if a<x+c then
-    begin
+    
         a:= c+x;
         write(a);
     end
