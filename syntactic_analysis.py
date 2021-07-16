@@ -406,7 +406,7 @@ def other_therm_syntatic(chain):
 
 ###################### função para invocar o metodo pânico do erro #####################
 def get_message_syntatic_error(chain, error, symb):
-    print('Erro sintático: {} esperado'.format(error))
+    print('Erro sintático na linha {}: {} esperado'.format(chain[0]['counter_lines'],error))
     return panic_method.panic_method(chain, term_followers[symb])
 
 ############ Syntatic Main #####################

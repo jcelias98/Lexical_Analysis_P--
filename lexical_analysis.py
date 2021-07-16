@@ -261,7 +261,7 @@ def add_final_word_to_table (table_tokens: list, lexical_message: str, final_wor
 
     #if error is not detected, add final_word and token to table_tokens
     if is_error == False:
-        table_tokens.append({'cadeia': final_word, 'token': resp_aux[1]})
+        table_tokens.append({'cadeia': final_word, 'token': resp_aux[1], 'counter_lines':counter_lines})
         lexical_message = lexical_message + final_word + ',' + resp_aux[1] + "\n"
     return [lexical_message, counter_errors]
 
@@ -489,7 +489,6 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> str:
 
 	                lexical_message, counter_errors, has_2_characters, final_word, table_tokens, counter_characters = check_one_or_two_characters (character, final_word, sentence, counter_characters, counter_lines,
 	                        counter_errors,is_comment, has_2_characters, lexical_message, table_tokens)
-
 	            #current final_word is 'end' and current character is '.' (i.e. end of p-- code)?
 	            elif (is_comment==False) and (final_word == 'end' and character == '.'):
 	                lexical_message, counter_errors, final_word, table_tokens = check_end_program (character, final_word, counter_errors, counter_lines, lexical_message, table_tokens)
@@ -512,12 +511,14 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> str:
 
 	#the comment was opened but not closed?
 	if is_comment == True:
-	    lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (4, counter_lines-1)
+	    lexical_message = lexical_message  + ',' + get_message_lexical_error (4, counter_lines-1)
 	    counter_errors += 1
 
 	#open output file and write lexical message
+    
 	file_output = open(file_name_output, 'w')
 	file_output.write(lexical_message)
+    
 
 	file_output.close()
 	file_input.close()

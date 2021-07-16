@@ -82,5 +82,7 @@ x,ident
 +,symb_add
 1,num_int
 ;,symb_semicol
+!,Erro léxico na linha 24: Caracter inválido
 end,symb_end
 .,symb_dot
+,Erro léxico na linha 26: Comentário não finalizado
