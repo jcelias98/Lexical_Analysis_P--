@@ -17,9 +17,8 @@ Authors: Bruno Ribeiro Helou (10276852)
 
 """
 
-
 import re
-
+lexical_errors = ""
 
 def is_num_int_automata(final_word: str) -> list:
 
@@ -60,7 +59,7 @@ def is_num_real_automata(final_word: str) -> list:
 
     Regular definition for recognizing real numbers:
 
-    	digit_non_0 -> 1|...|9
+        digit_non_0 -> 1|...|9
 		digit -> 0|1|...|9
 		integer_number -> (0)(.)(digit)+| (digit_non_0)(digit)*(.)(digit)+
 
@@ -178,18 +177,24 @@ def get_message_lexical_error (id_error: int, number_line: int) -> str:
         error_message: lexical error message
 
     """
+    global lexical_errors
     if id_error == 1:
         error_message = "Erro léxico na linha {}: Número inválido".format(str(number_line))
+        lexical_errors = lexical_errors + error_message +'\n'
         return error_message
     if id_error == 2:
         error_message = "Erro léxico na linha {}: Identificador inválido".format(str(number_line))
+        lexical_errors = lexical_errors + error_message + '\n'
         return error_message
     if id_error == 3:
         error_message = "Erro léxico na linha {}: Caracter inválido".format(str(number_line))
+        lexical_errors = lexical_errors + error_message + '\n'
         return error_message
     if id_error == 4:
         error_message = "Erro léxico na linha {}: Comentário não finalizado".format(str(number_line))
+        lexical_errors = lexical_errors + error_message + '\n'
         return error_message
+        
 
 ##########################################
 
@@ -404,7 +409,7 @@ def check_end_program (character:str, final_word: str, counter_errors: int, coun
 
 def check_comments (character: str, is_comment: bool, counter_lines: str) -> list:
 
-	"""
+    """
     Checks if a probably comment begun ('{'), or the comment is closed.
 
 
@@ -425,19 +430,19 @@ def check_comments (character: str, is_comment: bool, counter_lines: str) -> lis
         line_comment - number of line where the comment begun
 
     """
-	line_comment = ""
-	if (is_comment == False) and (character == '{'):
-		line_comment = counter_lines
-		is_comment = True
-	elif (is_comment == True) and (character == '}'):
-		is_comment = False
+    line_comment = ""
+    if (is_comment == False) and (character == '{'):
+        line_comment = counter_lines
+        is_comment = True
+    elif (is_comment == True) and (character == '}'):
+        is_comment = False
 
-	return [is_comment, line_comment]
+    return [is_comment, line_comment]
 
 ###############################################################################################################################################################
 
 def make_lexical_analysis (file_name_input: str, file_name_output: str) -> str:
-	"""
+    """
     Make the lexical analysis of an input file (p--	code) and saves the result in the output file.
 
 
@@ -455,72 +460,72 @@ def make_lexical_analysis (file_name_input: str, file_name_output: str) -> str:
 
     """
 
-	#open and read lines of input file (p-- code)
-	file_input = open(file_name_input, 'r')
-	lines = file_input.readlines()
+    #open and read lines of input file (p-- code)
+    file_input = open(file_name_input, 'r')
+    lines = file_input.readlines()
 
-	is_comment = False
-	has_2_characters = False
-	counter_lines = 1
-	counter_errors = 0
-	counter_characters = 0
-
-	table_tokens = []
-	lexical_message = ""
-	final_word = ""
+    is_comment = False
+    has_2_characters = False
+    counter_lines = 1
+    counter_errors = 0
+    counter_characters = 0
+    table_tokens = []
+    lexical_message = ""
+    lexical_error = ""
+    final_word = ""
 
 	#get each line
-	for line in lines:
+    for line in lines:
 
-	    #get words in a line
-	    words_in_line = line.strip().split(' ')
+        #get words in a line
+        words_in_line = line.strip().split(' ')
 
-	    #get sentences for words in a line
-	    for sentence in words_in_line:
+        #get sentences for words in a line
+        for sentence in words_in_line:
 
-	        counter_characters = 0
+            counter_characters = 0
 
-	        #get character in a sentence
-	        for character in sentence:
+            #get character in a sentence
+            for character in sentence:
 	            #current character is a puctuation word?
-	            if (character in '=,;()+-/*' and is_comment==False and has_2_characters==False) or \
-	                (character in ':<>' and is_comment==False and has_2_characters==False) or \
-	                (is_comment==False and has_2_characters==True):
+                if (character in '=,;()+-/*' and is_comment==False and has_2_characters==False) or \
+                    (character in ':<>' and is_comment==False and has_2_characters==False) or \
+                    (is_comment==False and has_2_characters==True):
 
-	                lexical_message, counter_errors, has_2_characters, final_word, table_tokens, counter_characters = check_one_or_two_characters (character, final_word, sentence, counter_characters, counter_lines,
-	                        counter_errors,is_comment, has_2_characters, lexical_message, table_tokens)
+                    lexical_message, counter_errors, has_2_characters, final_word, table_tokens, counter_characters = check_one_or_two_characters (character, final_word, sentence, counter_characters, counter_lines,
+                            counter_errors,is_comment, has_2_characters, lexical_message, table_tokens)
+
 	            #current final_word is 'end' and current character is '.' (i.e. end of p-- code)?
-	            elif (is_comment==False) and (final_word == 'end' and character == '.'):
-	                lexical_message, counter_errors, final_word, table_tokens = check_end_program (character, final_word, counter_errors, counter_lines, lexical_message, table_tokens)
+                elif (is_comment==False) and (final_word == 'end' and character == '.'):
+                    lexical_message, counter_errors, final_word, table_tokens = check_end_program (character, final_word, counter_errors, counter_lines, lexical_message, table_tokens)
 
 	            #check if the comment starts or ends
-	            elif ((is_comment == False) and (character == '{')) or ((is_comment == True) and (character == '}')):
-	                is_comment, line_comment = check_comments (character, is_comment, counter_lines)
+                elif ((is_comment == False) and (character == '{')) or ((is_comment == True) and (character == '}')):
+                    is_comment, line_comment = check_comments (character, is_comment, counter_lines)
 
 	            #final word is probably an identifier, a reserved word, an integer number or a real number!!!
-	            elif is_comment == False:
-	                final_word = final_word + character
+                elif is_comment == False:
+                    final_word = final_word + character
 
-	        if final_word != "":
-	        	#recognize the final_word and added to table
-	            lexical_message, counter_errors =  add_final_word_to_table (table_tokens, lexical_message, final_word, counter_lines, counter_errors)
-	            final_word = ""
+            if final_word != "":
+                #recognize the final_word and added to table
+                lexical_message, counter_errors =  add_final_word_to_table (table_tokens, lexical_message, final_word, counter_lines, counter_errors)
+                final_word = ""
 
 	    #analyse next line
-	    counter_lines = counter_lines + 1
+        counter_lines = counter_lines + 1
 
 	#the comment was opened but not closed?
-	if is_comment == True:
-	    lexical_message = lexical_message  + ',' + get_message_lexical_error (4, counter_lines-1)
-	    counter_errors += 1
+    if is_comment == True:
+        lexical_message = lexical_message + final_word + ',' + get_message_lexical_error (4, counter_lines-1)
+        counter_errors += 1
 
 	#open output file and write lexical message
     
-	file_output = open(file_name_output, 'w')
-	file_output.write(lexical_message)
+    file_output = open(file_name_output, 'w')
+    file_output.write(lexical_errors)
     
 
-	file_output.close()
-	file_input.close()
-
-	return table_tokens
+    file_output.close()
+    file_input.close()
+    return table_tokens

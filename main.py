@@ -15,7 +15,7 @@ def parse_args():
 
 def main(args):
     lexical_result = lexical_analysis.make_lexical_analysis(args.input, args.output)
-    syntactic_analysis.make_syntatic_analysis(lexical_result)
+    syntactic_analysis.make_syntatic_analysis(lexical_result, args.output)
 
 #-----------------------------------------------------
 if __name__ == '__main__': # chamada da funcao principal

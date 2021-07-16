@@ -8,5 +8,6 @@ def panic_method(chain, followers): #essa função consome a cadeia até que sej
             chain.pop(0)
         if not chain:
             print("Método do pânico consumiu toda a cadeia a partir de ", inicial)
+
     return chain
 

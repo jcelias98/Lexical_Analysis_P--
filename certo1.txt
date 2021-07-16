@@ -4,7 +4,7 @@ program p;
 const eba = 2;
 const ea = 2;
 
-var x,y z: integer;
+var x@,y z: integer;
 
 procedure nomep(x: real);
 begin

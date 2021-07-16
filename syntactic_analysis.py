@@ -1,5 +1,6 @@
 #importa o método pânico
 import panic_method
+syntatic_errors = ""
 ################### Acho que dicionário com chave: símbolo e valor: seguidores do símbolo e seguidores do pai. Utilizado para encontrar
 #  a parada no método de pânico para tratamento de erros #########################
 term_followers = {'symb_program': ["ident"], 'ident': ['symb_semicol', 'symb_coma', 'symb_col', 'symb_oparentesis', 'symb_begin', 'symb_cparentesis', 'symb_assign', 'symb_add', 'symb_diff', 'symb_div', 'symb_mult', 'symb_then', 'symb_eq', 'symb_neq', 'symb_gte', 'symb_lte', 'symb_gt', 'symb_lt'],
@@ -406,14 +407,21 @@ def other_therm_syntatic(chain):
 
 ###################### função para invocar o metodo pânico do erro #####################
 def get_message_syntatic_error(chain, error, symb):
+    global syntatic_errors
+    syntatic_errors =  syntatic_errors + 'Erro sintático na linha {}: {} esperado'.format(chain[0]['counter_lines'],error) +'\n'
     print('Erro sintático na linha {}: {} esperado'.format(chain[0]['counter_lines'],error))
     return panic_method.panic_method(chain, term_followers[symb])
 
 ############ Syntatic Main #####################
-def make_syntatic_analysis(chain: str):
+def make_syntatic_analysis(chain: str, file_name_output: str):
+    global syntatic_errors
     number_of_errors = 0
     rest = program_syntatic(chain, number_of_errors)
     if not rest:
-        print('Sucess')
+        print(syntatic_errors)
+        
+        file_output = open(file_name_output, 'a')
+        file_output.write(syntatic_errors)
+        file_output.close()
     else:
         print('ERRO, Programa não finalizado')
