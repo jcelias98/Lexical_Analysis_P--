@@ -111,7 +111,7 @@ def is_identifier_automata(final_word: str) -> list:
     reserved_words = ({'program':'symb_program','begin':'symb_begin','end':'symb_end', 'const': 'symb_const',
                     'var':'symb_var', 'real':'symb_real', 'integer':'symb_integer', 'procedure':'symb_procedure',
                     'read':'symb_read', 'else':'symb_else', 'while':'symb_while', 'do':'symb_do','for':'symb_for',
-                    'to':'symb_to', 'if':'symb_if','then':'symb_then','else':'symb_else'})
+                    'to':'symb_to', 'if':'symb_if','then':'symb_then','else':'symb_else','write':'symb_write'})
 
     if final_word in reserved_words:
         token = reserved_words[final_word]
